@@ -10,7 +10,7 @@ author_id: null
 # https://www.semanticscholar.org/product/api
 s2_api_key: "your_key"
 openai_api_key: null
-openrouter_api_key: "your_key_openrouter_optional"
+openrouter_api_key: "your_key_openrouter_optional" # openrouter
 
 year_range: "2018-2025"
 include_types:
