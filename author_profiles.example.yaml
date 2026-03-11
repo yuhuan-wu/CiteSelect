@@ -1,0 +1,15 @@
+authors:
+  - name: "Kaiming He"
+    aliases:
+      - "K. He"
+    tags:
+      - "IEEE Fellow"
+      - "高引用学者"
+  - name: "Ming-Ming Cheng"
+    aliases:
+      - "Mingming Cheng"
+    tags:
+      - "国家杰青"
+  - name: "Example Chair Professor"
+    tags:
+      - "Chair Professor"

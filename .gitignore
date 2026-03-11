@@ -1,0 +1,23 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+# Local secrets / machine-specific config
+config.yaml
+
+# Runtime outputs
+outputs/
+cache/
+logs/
+reports/
+citations/
+citations_refined/
+publications.txt
+publications.jsonl
+
+# Legacy experimental outputs
+citations_t/
+citations_refined_t/
+
+# Embedded upstream repo metadata; keep files, ignore nested git internals
+academic-awards/.git/
