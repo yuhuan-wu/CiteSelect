@@ -134,7 +134,7 @@ def create_llm_client_from_config(cfg: Dict[str, Any]) -> OpenAIChatClient:
             or os.environ.get("OPENAI_API_KEY")
         )
         base_url = str(llm_cfg.get("base_url") or "https://openrouter.ai/api/v1")
-        app_name = str(llm_cfg.get("app_name") or "semanticscholarclaw")
+        app_name = str(llm_cfg.get("app_name") or "CiteSelect")
         site_url = str(llm_cfg.get("site_url") or "https://github.com/")
         default_headers = {
             "HTTP-Referer": site_url,

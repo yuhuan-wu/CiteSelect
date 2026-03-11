@@ -64,7 +64,7 @@ DEFAULT_CONFIG: Dict[str, Any] = {
         "provider": "openrouter",
         "model": "openai/gpt-5.4",
         "base_url": "https://openrouter.ai/api/v1",
-        "app_name": "semanticscholarclaw",
+        "app_name": "CiteSelect",
         "site_url": "https://github.com/",
         "batch_size": 40,
         "temperature": 1.0,
