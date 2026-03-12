@@ -1,37 +1,8 @@
 # CiteSelect
 
-Semantic Scholar citation mining pipeline for a target researcher.
+CiteSelect is a citation mining pipeline for finding representative citations of a target researcher.
 
-It fetches the researcher's papers, collects all citing papers and citation contexts,
-uses LLM-based refinement to rank representative citations, enriches author identity
-signals with academic-awards datasets, and exports a reviewable Excel workbook for
-grant / talent / evaluation materials.
-
-## What It Produces
-
-- `outputs/citations/`: raw citing papers and citation contexts
-- `outputs/citations_refined/`: LLM-refined citation judgments
-- `outputs/reports/representative_citations.xlsx`: final Excel export
-
-Main Excel columns:
-
-- `citing paper title`
-- `citing venue`
-- `authors`
-- `author type`
-- `citation role`
-- `importance score`
-- `citing content`
-
-## Repo Layout
-
-- `collect.py`: CLI entrypoint
-- `fetch_citations.py`: fetch citing papers from Semantic Scholar
-- `refine_citations.py`: compact LLM refinement
-- `export_excel.py`: Excel export and post-filters
-- `award_matcher.py`: local fuzzy matching against award/fellow datasets
-- `academic-awards/data/`: vendored award/member datasets
-- `config.example.yaml`: example config without secrets
+It fetches the researcher's papers from Semantic Scholar, collects citing papers and citation contexts, runs LLM-based refinement, enriches author identity signals with fellow/member datasets, and exports a reviewable Excel workbook for grant / talent / evaluation materials.
 
 ## Install
 
@@ -43,40 +14,27 @@ pip install -r requirements.txt
 
 ## Configure
 
-Create a local config from the example:
+Create a local config first:
 
 ```bash
 cp config.example.yaml config.yaml
 ```
 
-Fill at least:
+At minimum, fill:
 
 - `author_url` or `author_id`
 - `s2_api_key` which is the Semantic Scholar API key
 - `openrouter_api_key` if using the default OpenRouter setup
 
-Notes:
-
-- `config.yaml` is intentionally ignored by git because it may contain secrets.
-- `academic-awards/data/` is committed and used for local fellow/member matching.
-
-### How to get `s2_api_key`
-
-`s2_api_key` means the Semantic Scholar API key.
+### Get `s2_api_key`
 
 Official page:
 
 - https://www.semanticscholar.org/product/api
 
-Request an API key there, then put it into `config.yaml`:
+### Get `author_url` / `author_id`
 
-```yaml
-s2_api_key: "YOUR_SEMANTIC_SCHOLAR_API_KEY"
-```
-
-### How to get `author_url` and `author_id`
-
-Open the target researcher’s Semantic Scholar author profile page and copy the URL.
+Open the target researcher's Semantic Scholar author page and copy the URL.
 
 Example:
 
@@ -89,12 +47,12 @@ In this example:
 - `author_url` is the full URL
 - `author_id` is the numeric suffix at the end: `48607882`
 
-This repository can parse `author_id` automatically from `author_url`, so in most cases setting `author_url` alone is enough.
+This repository can parse `author_id` automatically from `author_url`, so usually setting only `author_url` is enough.
 
-Official references:
+Reference docs:
 
-- Graph API docs: https://api.semanticscholar.org/api-docs/graph
-- Semantic Scholar API / FAQ page: https://www.semanticscholar.org/faq#api-key-form
+- https://api.semanticscholar.org/api-docs/graph
+- https://www.semanticscholar.org/faq#api-key-form
 
 ## Usage
 
@@ -104,19 +62,19 @@ Fetch the target researcher's publication list:
 python3 collect.py fetch-publications
 ```
 
-Fetch all citations for all target papers:
+Fetch all citations:
 
 ```bash
 python3 collect.py fetch-citations
 ```
 
-Run LLM refinement on all fetched citations:
+Run citation refinement:
 
 ```bash
 python3 collect.py refine-citations --no-echo-llm
 ```
 
-Export the final Excel workbook:
+Export the Excel workbook:
 
 ```bash
 python3 collect.py export-excel
@@ -128,7 +86,7 @@ Run the full pipeline:
 python3 collect.py all
 ```
 
-Useful debug commands:
+Useful debug flow:
 
 ```bash
 python3 collect.py fetch-citations --first-n 1 --per-paper-max 100
@@ -136,46 +94,29 @@ python3 collect.py refine-citations --first-n 1 --no-echo-llm
 python3 collect.py export-excel --first-n 1
 ```
 
-## Matching and Filtering
+## Output
 
-### Author Type
+Main output files:
 
-`author type` is built from:
+- `outputs/citations/`: raw citing papers and contexts
+- `outputs/citations_refined/`: refined citation judgments
+- `outputs/reports/representative_citations.xlsx`: final Excel workbook
 
-- local award/member matching in `academic-awards/data/`
-- optional manual additions in `author_profiles.yaml`
-- citing-paper citation count heuristics
+Main Excel columns include:
 
-The author matcher is conservative by design:
+- `citing paper title`
+- `citing venue`
+- `authors`
+- `author type`
+- `citation role`
+- `importance score`
+- `citing content`
 
-- rule-based exact / near-exact matching first
-- optional LLM filter removes suspicious tags using only `authors` and `author type`
+## Notes
 
-### Venue Type
-
-`venue type` is assigned by:
-
-- local rules for common CV / AI / medical-imaging venues
-- optional LLM correction for uncertain venues
-
-Categories:
-
-- `顶级期刊/会议`
-- `高水平期刊/会议`
-- `主流期刊/会议`
-- `预印本`
-- `其他期刊/会议`
-
-## Outputs and Git
-
-- All runtime outputs go under `outputs/`
-- `outputs/` is ignored by git
-- only source code, config examples, and necessary static datasets are intended to be committed
-
-## Data Source Note
-
-The `academic-awards` folder includes vendored award/member datasets and upstream scraping scripts.
-Its nested `.git` metadata is ignored so the files can live inside this repository as normal tracked files.
+- `config.yaml` is ignored by git because it may contain secrets.
+- Runtime outputs are written to `outputs/`.
+- `academic-awards/data/` is vendored and used for local fellow/member matching.
 
 ## Acknowledgments
 
