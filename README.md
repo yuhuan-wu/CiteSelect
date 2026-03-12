@@ -2,7 +2,13 @@
 
 CiteSelect is a citation mining pipeline for finding representative citations of a target researcher.
 
+
 It fetches the researcher's papers from Semantic Scholar, collects citing papers and citation contexts, runs LLM-based refinement, enriches author identity signals with fellow/member datasets, and exports a reviewable Excel workbook for grant / talent / evaluation materials.
+
+Below is an example of the exported review workbook.
+
+![Example output](figures/example.png)
+
 
 ## Install
 
